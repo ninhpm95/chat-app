@@ -2,16 +2,16 @@
 A simple chat application
 
 ### Technology
-1. Front-end: React, Redux
-2. Back-end: WebSocket
-3. Others: webpack, scss
+Front-end: React, Redux  
+Back-end: WebSocket  
+Others: webpack, scss  
 
 ### How to run
-1. Install dependencies
+1. Install dependencies  
   npm install
-2. Run server
+2. Run server  
   npm run server
-3. Run client
+3. Run client  
   npm start
   
 ### Screenshots
