@@ -1,0 +1,72 @@
+.user-list-wrapper {
+  height: 100%;
+  background-color: $main_color;
+
+  > h3 {
+    background-color: darken($main_color, 10%);
+    color: lighten($main_color, 25%);
+    padding: 0.5em 1em 0.5em;
+    text-transform: uppercase;
+  }
+}
+
+.user-list {
+  white-space: nowrap;
+}
+
+.user {
+  display: block;
+  padding: 1em 1em 1em 1em;
+  border-bottom: 1px solid darken($main_color, 5%);
+
+  @media screen and (max-width: $mobile_breakpoint) {
+    display: inline-block;
+    padding: 0.5em 1em 1em 1em;
+    border-bottom: unset;
+  }
+}
+
+.user.user-me {
+  background-color: lighten($main_color, 5%);
+}
+
+.user:hover, .user.user-me:hover {
+  background-color: darken($main_color, 5%);
+}
+
+.user-profile-picture {
+  float: left;
+  width: 2em; height: 2em;
+  background-color: lighten($main_color, 50%);
+  border: 1px solid darken($main_color, 10%); border-radius: 50%;
+
+  > img {
+    width: 100%; height: 100%;
+  }
+}
+
+.username {
+  font-size: 16px;
+  color: lighten($main_color, 50%);
+  margin-left: 2em;
+  padding: 0.2em 0em 0.2em 0.5em;
+}
+
+.user-typing {
+  font-size: 10px;
+  color: lighten($main_color, 50%);
+  margin-left: 3.5em;
+  padding-left: 0.65em;  
+}
+
+.pulsate {
+  animation: pulsate 1000ms;
+  animation-iteration-count: infinite;
+  opacity: 1.0;
+}
+
+@keyframes pulsate {
+  0% { opacity: 0.3; }
+  50% { opacity: 1.0; }
+  100% { opacity: 0.3; }
+}

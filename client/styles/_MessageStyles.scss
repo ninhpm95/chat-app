@@ -1,0 +1,56 @@
+.message-list-wrapper {
+  background-color: white;
+  position: absolute;
+  top: 0; right: 0; bottom: $message_input_height; left: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.message {
+  padding: 1em;
+}
+
+.message-text {
+  background-color: lightgray;
+  max-width: 75%;
+  display: inline-block;
+  padding: 0.5em 0.5em;
+  border-radius: 0.3em;
+}
+
+.message.message-me {
+  text-align: right;
+}
+
+.message.message-me .message-text {
+  background-color: $main_color;
+}
+
+.message-time {
+  font-size: 10px;
+  color: lightgray;
+  display: block;
+  padding-top: 0.3em;
+}
+
+.my-msg-appear {
+  opacity: 0.1;
+  transform: translateX(100%);
+}
+
+.my-msg-appear.my-msg-appear-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 200ms;
+}
+
+.other-msg-appear {
+  opacity: 0.1;
+  transform: translateX(-100%);
+}
+
+.other-msg-appear.other-msg-appear-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 200ms;
+}

@@ -1,0 +1,11 @@
+@import '~reset-css/reset.css';
+
+$main_color: rgb(106, 97, 228);
+$mobile_breakpoint: 600px;
+$message_input_height: 5em;
+
+@import './styles/GlobalStyles.scss';
+@import './styles/MainStyles.scss';
+@import './styles/MessageInputStyles.scss';
+@import './styles/MessageStyles.scss';
+@import './styles/UserStyles.scss';

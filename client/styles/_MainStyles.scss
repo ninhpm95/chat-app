@@ -1,0 +1,32 @@
+.main-wrapper {
+  width: 100%; height: 100%;
+
+  display: grid;
+  grid-template-areas: 'sidebar main';
+  grid-template-rows: 1fr;
+  grid-template-columns: 33% 1fr;
+ 
+  @media screen and (max-width: $mobile_breakpoint) {
+    grid-template-areas:
+      'sidebar'
+      'main';
+    grid-template-rows: 5em 1fr;
+    grid-template-columns: 1fr;
+  }
+}
+
+.main {
+  grid-area: main;
+  position: relative;
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.loading-screen {
+  font-size: 28px;
+  color: gray;
+  text-align: center;
+  padding-top: 25%;
+}
