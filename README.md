@@ -2,9 +2,9 @@
 A simple chat application
 
 ### Technology
-Front-end: React, Redux
-Back-end: WebSocket
-Others: webpack, scss
+1. Front-end: React, Redux
+2. Back-end: WebSocket
+3. Others: webpack, scss
 
 ### How to run
 1. Install dependencies
