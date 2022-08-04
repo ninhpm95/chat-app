@@ -2,11 +2,11 @@ import { SEND_MESSAGE, SET_STATUS_TO_TYPING } from '../const/ClientActionTypes';
 
 let addEmoji = text => (
   text
-    .replace(/\:\)/, '\u{1F642}')
-    .replace(/\:D/, '\u{1F601}')
-    .replace(/\:P/, '\u{1F60B}')
-    .replace(/\;\)/, '\u{1F609}')
-    .replace(/\:\(/, '\u{1F622}')
+    .replace(/\:\)/g, '\u{1F642}')
+    .replace(/\:D/g, '\u{1F601}')
+    .replace(/\:P/g, '\u{1F60B}')
+    .replace(/\;\)/g, '\u{1F609}')
+    .replace(/\:\(/g, '\u{1F622}')
 );
 
 export default store => next => action => {
@@ -16,7 +16,7 @@ export default store => next => action => {
       payload: {
         ...action.payload,
         userId: store.getState().activeUser.id,
-        text: addEmoji(action.payload.text),        
+        text: addEmoji(action.payload.text),
         time: new Date(),
       },
     });

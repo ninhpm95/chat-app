@@ -38,7 +38,7 @@ export default store => next => action => {
           userId: action.payload.userId,
           text: action.payload.text,
           type: 'normal',
-          time: action.payload.time          
+          time: action.payload.time
         }
       }));
     }
