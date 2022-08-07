@@ -73,7 +73,7 @@ socket.onmessage = ({ data }) => {
 }
 
 socket.onerror = () => {
-  alert('Socket error!')
+  alert('Socket error!');
 }
 
 export default socket
