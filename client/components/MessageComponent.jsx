@@ -29,7 +29,7 @@ class MessageComponent extends Component {
               })}>
               <span className="message-text" style={{ whiteSpace: 'pre-line' }}>{
                 message.text.split('\n').map(text =>
-                  text.length <= 20 ? text : text.match(/.{1,20}/g).join('\n')
+                  text.length <= 30 ? text : text.match(/.{1,30}/g).join('\n')
                 ).join('\n')
               }</span>
               <span className="message-time">{message.time}</span>
