@@ -17,7 +17,7 @@ export default store => next => action => {
         ...action.payload,
         userId: store.getState().activeUser.id,
         text: addEmoji(action.payload.text),
-        time: new Date(),
+        time: new Date().toLocaleString(),
       },
     });
   }
