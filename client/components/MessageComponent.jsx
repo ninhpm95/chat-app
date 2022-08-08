@@ -27,7 +27,7 @@ class MessageComponent extends Component {
               className={classNames(`message`, {
                 'message-me': message.userId === activeUser.id
               })}>
-              <span className="message-text">{message.text}</span>
+              <span className="message-text" style={{ whiteSpace: 'pre-line' }}>{message.text.length <= 20 ? message.text : message.text.match(/.{20}/g).join('\n')}</span>
               <span className="message-time">{message.time}</span>
             </li>
           ))}
