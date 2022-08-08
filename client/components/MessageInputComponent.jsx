@@ -29,9 +29,9 @@ class MessageInputComponent extends Component {
   handleOnKeyPressEvent = event => {
     if (event.key === 'Enter') {
       if (event.shiftKey) {
-        event.preventDefault();
-        event.target.value += '\n';
-        this.setMessageText(event.target.value);
+        // event.preventDefault();
+        // event.target.value += '\n';
+        // this.setMessageText(event.target.value);
       } else if (this.state.message === '') {
         event.preventDefault();
       } else {
