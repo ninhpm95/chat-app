@@ -1,10 +1,10 @@
-import { createElement } from 'react'
-import { render } from 'react-dom'
+import { createElement } from 'react';
+import { render } from 'react-dom';
 
-import Application from './application'
-import store from './store'
+import Application from './application';
+import store from './store';
 
-import './styles'
+import './styles';
 
 render(
   createElement(Application, { store }),

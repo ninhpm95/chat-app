@@ -1,5 +1,5 @@
-const APPLICATION_HOST = 'localhost'
-const SOCKET_PORT = 3002
+const APPLICATION_HOST = 'localhost';
+const SOCKET_PORT = 3002;
 
 import {
   START_APP,
@@ -15,12 +15,12 @@ import {
   MESSAGE_LIST_UPDATED,
 } from './const/SocketActionTypes';
 
-import store from './store'
+import store from './store';
 
-let socket = new WebSocket(`ws://${APPLICATION_HOST}:${SOCKET_PORT}`)
+let socket = new WebSocket(`ws://${APPLICATION_HOST}:${SOCKET_PORT}`);
 
 socket.onopen = () => {
-  console.log('Socket ready...')
+  console.log('Socket ready...');
 }
 
 socket.onmessage = ({ data }) => {
@@ -37,7 +37,7 @@ socket.onmessage = ({ data }) => {
           },
         }
       )
-      break
+      break;
 
     case USER_LIST_UPDATED:
       store.dispatch({
@@ -47,7 +47,7 @@ socket.onmessage = ({ data }) => {
           },
         }
       )
-      break
+      break;
 
     case MESSAGE_RECEIVED:
       store.dispatch({
@@ -56,7 +56,7 @@ socket.onmessage = ({ data }) => {
           messages: action.payload.messages,
         },
       })
-      break
+      break;
 
     case MESSAGE_LIST_UPDATED:
       store.dispatch({
@@ -65,10 +65,10 @@ socket.onmessage = ({ data }) => {
           messages: action.payload.messages,
         },
       })
-      break
+      break;
 
     default:
-      console.log('Unknown action: ', action)
+      console.log('Unknown action: ', action);
   }
 }
 
@@ -76,4 +76,4 @@ socket.onerror = () => {
   alert('Socket error!');
 }
 
-export default socket
+export default socket;

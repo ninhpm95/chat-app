@@ -1,7 +1,7 @@
-import React from 'react'
-import { Provider } from 'react-redux'
+import React from 'react';
+import { Provider } from 'react-redux';
 
-import MainComponent from './components/MainComponent'
+import MainComponent from './components/MainComponent';
 
 const Application = ({ store }) => (
   <Provider store={store}>
@@ -9,4 +9,4 @@ const Application = ({ store }) => (
   </Provider>
 )
 
-export default Application
+export default Application;
