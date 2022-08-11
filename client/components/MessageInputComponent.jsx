@@ -6,6 +6,8 @@ import {
   SEND_MESSAGE
 } from '../const/ClientActionTypes';
 
+import i18n from "../i18n";
+
 class MessageInputComponent extends Component {
   state = { message: '' };
 
@@ -44,7 +46,7 @@ class MessageInputComponent extends Component {
     return (
       <div className="message-input-wrapper">
         <textarea
-          placeholder="Enter a message"
+          placeholder={i18n.t('messageInput.send')}
           value={this.state.message}
           onChange={this.handleOnChangeEvent}
           onKeyPress={this.handleOnKeyPressEvent}
@@ -56,7 +58,7 @@ class MessageInputComponent extends Component {
 }
 
 export default connect(
-  () => ({}),
+  state => ({ language: state.application.language }),
   dispatch => ({
     onTyping: text => dispatch({
       type: SET_STATUS_TO_TYPING,

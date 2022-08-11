@@ -1,0 +1,11 @@
+{
+  "translation": {
+    "user": {
+      "list": "Danh sách người dùng",
+      "online": "trực tuyến"
+    },
+    "messageInput": {
+      "send": "Nhập tin nhắn"
+    }
+  }
+}

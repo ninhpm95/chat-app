@@ -1,0 +1,11 @@
+{
+  "translation": {
+    "user": {
+      "list": "User list",
+      "online": "online"
+    },
+    "messageInput": {
+      "send": "Enter a messasge"
+    }
+  }
+}

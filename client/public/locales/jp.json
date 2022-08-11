@@ -1,0 +1,11 @@
+{
+  "translation": {
+    "user": {
+      "list": "ユーザー一覧",
+      "online": "オンライン"
+    },
+    "messageInput": {
+      "send": "メッセージを入力してください"
+    }
+  }
+}

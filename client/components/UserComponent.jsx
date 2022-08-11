@@ -4,9 +4,12 @@ import classNames from 'classnames';
 
 import ProfilePicture from '../static/UserProfilePicture.png';
 
-let UserComponent = ({ activeUser, users }) => (
+import i18n from "../i18n";
+import { CHANGE_LANGUAGE } from '../const/ClientActionTypes';
+
+let UserComponent = ({ activeUser, users, changeLanguage }) => (
   <div className="user-list-wrapper">
-    <h3>User list</h3>
+    <h3>{i18n.t("user.list")}</h3>
     <ul className="user-list">
       {users.map(user => (
         <li
@@ -29,12 +32,26 @@ let UserComponent = ({ activeUser, users }) => (
             {
               user.typing && user.id !== activeUser.id
               ? 'typing...'
-              : 'online'
+              : i18n.t("user.online")
             }
           </div>
         </li>
       ))}
     </ul>
+    <div className="language-setting">
+      <button onClick={() => {
+        i18n.changeLanguage('en');
+        changeLanguage('en');
+      }}>EN</button>
+      <button onClick={() => {
+        i18n.changeLanguage('jp');
+        changeLanguage('jp');
+      }}>JP</button>
+      <button onClick={() => {
+        i18n.changeLanguage('vn');
+        changeLanguage('vn');
+      }}>VN</button>
+    </div>
   </div>
 );
 
@@ -42,5 +59,10 @@ export default connect(
   state => ({
     activeUser: state.activeUser,
     users: Object.keys(state.users).map(id => state.users[id])
+  }), dispatch => ({
+    changeLanguage: language => dispatch({
+      type: CHANGE_LANGUAGE,
+      payload: { language }
+    })
   })
 )(UserComponent);
