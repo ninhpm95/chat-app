@@ -14,7 +14,13 @@ class MessageInputComponent extends Component {
   setMessageText = text => {
     this.setState(
       { message: text },
-      () => this.props.onTyping(this.state.message)
+      () => {
+        let userIndex = this.props.users.findIndex(user => user.id === this.props.activeUser.id);
+        let isTyping = !!this.state.message.length;
+        if (this.props.users[userIndex].typing !== isTyping) {
+          this.props.onTyping(this.state.message);
+        }        
+      }
     );
   }
 
@@ -58,7 +64,11 @@ class MessageInputComponent extends Component {
 }
 
 export default connect(
-  state => ({ language: state.application.language }),
+  state => ({
+    language: state.application.language,
+    activeUser: state.activeUser,
+    users: state.users
+  }),
   dispatch => ({
     onTyping: text => dispatch({
       type: SET_STATUS_TO_TYPING,

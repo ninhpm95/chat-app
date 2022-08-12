@@ -5,24 +5,14 @@ import { SEND_MESSAGE, SET_STATUS_TO_TYPING } from '../const/ClientActionTypes';
 import {
   USER_TYPING,
   CHANGE_USERNAME,
-  MESSAGE_SENT,
-  DELETE_LAST_MESSAGE
+  MESSAGE_SENT
 } from '../const/SocketActionTypes';
 
 const CHANGE_USERNAME_CMD = '/change_username ';
-const DELETE_LAST_MESSAGE_CMD = '/delete_last_message';
 
 export default store => next => action => {
   if (action.type === SEND_MESSAGE) {
-    if (action.payload.text === DELETE_LAST_MESSAGE_CMD) {
-      socket.send(JSON.stringify({
-        type: DELETE_LAST_MESSAGE,
-        payload: {
-          userId: action.payload.userId,
-        }
-      }));
-
-    } else if (action.payload.text.startsWith(CHANGE_USERNAME_CMD)) {
+    if (action.payload.text.startsWith(CHANGE_USERNAME_CMD)) {
       socket.send(JSON.stringify({
         type: CHANGE_USERNAME,
         payload: {

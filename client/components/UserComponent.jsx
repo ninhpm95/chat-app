@@ -57,8 +57,9 @@ let UserComponent = ({ activeUser, users, changeLanguage }) => (
 
 export default connect(
   state => ({
+    language: state.application.language,
     activeUser: state.activeUser,
-    users: Object.keys(state.users).map(id => state.users[id])
+    users: state.users
   }), dispatch => ({
     changeLanguage: language => dispatch({
       type: CHANGE_LANGUAGE,

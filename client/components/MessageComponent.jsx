@@ -44,6 +44,6 @@ class MessageComponent extends Component {
 export default connect(
   state => ({
     activeUser: state.activeUser,
-    messages: Object.keys(state.messages).map(id => state.messages[id])
+    messages: state.messages
   })
 )(MessageComponent);

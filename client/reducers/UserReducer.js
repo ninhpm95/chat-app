@@ -4,7 +4,7 @@ export default (state = {}, action) => {
   switch (action.type) {
     case START_APP:
     case UPDATE_USER_LIST:
-      return { ...action.payload.users };
+      return action.payload.users;
 
     default:
       return state;

@@ -4,7 +4,7 @@ export default (state = {}, action) => {
   switch (action.type) {
     case START_APP:
     case UPDATE_MESSAGE_LIST:
-      return { ...action.payload.messages };
+      return action.payload.messages;
 
     default:
       return state;
