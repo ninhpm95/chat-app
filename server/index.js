@@ -1,5 +1,8 @@
 const WebSocket = require('ws');
 const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
+const User = require('./models/user');
+const Message = require('./models/message');
 
 const SOCKET_PORT = 3002;
 
@@ -13,36 +16,89 @@ const {
   MESSAGE_RECEIVED,
   MESSAGE_LIST_UPDATED,
 
-  CHANGE_USERNAME,
-  DELETE_LAST_MESSAGE
+  CHANGE_USERNAME
 } = require('./const/SocketActionTypes');
+
+let mongodbUri = 'mongodb+srv://testuser:P%40ssword@cluster0.yqfofiw.mongodb.net/chat-app?retryWrites=true&w=majority';
 
 const server = new WebSocket.Server({ port: SOCKET_PORT });
 
-const users = {};
+let users = [];
 
-const messages = {};
+let messages = [];
 
-const findLastMessageByUserId = (messageArray, userId) => {
-  for (let i = messageArray.length - 1; i >= 0; i--) {
-    if (messageArray[i].userId === userId) {
-      return messageArray[i];
-    }
+let connectToDB = async () => {
+  try {
+    await mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("DB connected!");
+  } catch (err) {
+    console.log(err);
   }
-};
+}
 
-server.on('connection', ws => {
+let getAllUsers = async () => {
+  try {
+    let users = await User.find({}, {id: 1, name: 1, typing: 1, _id:0});
+    console.log('User list received!');
+    console.log(users);
+    return users;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+let getAllMessages = async () => {
+  try {
+    let messages = await Message.find({}, {id: 1, type: 1, count: 1, text: 1, time: 1, userId: 1, _id:0});
+    return messages;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+let addUser = async (user) => {
+  try {
+    const newUser = await user.save();
+    console.log('New user added!');
+    console.log(newUser);
+    return newUser;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+let addMessage = async (message) => {
+  try {
+    const newMessage = await message.save();
+    console.log('New message added!');
+    console.log(newMessage);
+    return newMessage;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+server.on('connection', async (ws) => {
+  await connectToDB();
+
   const CurrentId = uuidv4();
 
-  users[CurrentId] = {
+  const newUser = new User({
     id: CurrentId,
-    name: `User-${CurrentId.substring(0, 5)}`,
-  };
+    password: 'P@ssword',
+    email: `User-${CurrentId.substring(0, 5)}@ninh.com`,
+    name: `User-${CurrentId.substring(0, 5)}`
+  });
+
+  await addUser(newUser);
+
+  users = await getAllUsers();
+  messages = await getAllMessages();
 
   broadcastToSelf({
     type: USER_CONNECTED,
     payload: {
-      activeUser: users[CurrentId],
+      activeUser: { id: newUser.id, name: newUser.name },
       users,
       messages,
     },
@@ -55,20 +111,16 @@ server.on('connection', ws => {
     },
   }, ws);
 
-  console.log('User connected');
-  console.log('User: ', users[CurrentId]);
-
-  ws.on('message', message => {
+  ws.on('message', async (message) => {
     const action = JSON.parse(message);
 
     switch (action.type) {
       case USER_TYPING: {
-        users[action.payload.userId] = {
-          ...users[action.payload.userId],
-          typing: action.payload.typing,
-        };
-
-        broadcastToOthers({
+        await User.updateOne({ id: action.payload.userId }, { $set: { typing: action.payload.typing } });
+        users = await getAllUsers();
+        // let userIndex = users.findIndex(user => user.userId === action.payload.userId);
+        // users[userIndex] = { ...users[userIndex], typing: action.payload.typing };
+        broadcastToAll({
           type: USER_LIST_UPDATED,
           payload: {
             users,
@@ -76,7 +128,6 @@ server.on('connection', ws => {
         });
 
         console.log('User is typing');
-        console.log('User: ', users[action.payload.userId]);
 
         break;
       }
@@ -84,19 +135,22 @@ server.on('connection', ws => {
       case MESSAGE_SENT: {
         const NewMessageId = uuidv4();
 
-        messages[NewMessageId] = {
+        let newMessage = new Message({
           id: NewMessageId,
           type: action.payload.type,
           count: action.payload.count,
           text: action.payload.text,
           time: action.payload.time,
-          userId: action.payload.userId,
-        };
+          userId: action.payload.userId
+        });
+
+        await addMessage(newMessage);
+        messages = await getAllMessages();
 
         broadcastToSelf({
           type: MESSAGE_RECEIVED,
           payload: {
-            message: messages[NewMessageId],
+            message: newMessage,
             messages,
           },
         }, ws);
@@ -109,16 +163,13 @@ server.on('connection', ws => {
         }, ws);
 
         console.log('Message received');
-        console.log('Message: ', messages[NewMessageId]);
 
         break;
       }
 
       case CHANGE_USERNAME: {
-        users[action.payload.userId] = {
-          ...users[action.payload.userId],
-          name: action.payload.userName,
-        };
+        await User.updateOne({ id: action.payload.userId }, { $set: { name: action.payload.userName } });
+        users = await getAllUsers();
 
         broadcastToAll({
           type: USER_LIST_UPDATED,
@@ -128,28 +179,6 @@ server.on('connection', ws => {
         });
 
         console.log('User name updated');
-        console.log('User: ', users[action.payload.userId]);
-
-        break;
-      }
-
-      case DELETE_LAST_MESSAGE: {
-        const messageArray = Object.keys(messages).map(key => messages[key]);
-        const lastMessage = findLastMessageByUserId(messageArray, action.payload.userId);
-
-        if (lastMessage) {
-          delete messages[lastMessage.id];
-
-          broadcastToAll({
-            type: MESSAGE_LIST_UPDATED,
-            payload: {
-              messages,
-            },
-          });
-
-          console.log('Message removed');
-          console.log('Message: ', lastMessage);
-        }
 
         break;
       }
@@ -159,8 +188,9 @@ server.on('connection', ws => {
     }
   })
 
-  ws.on('close', () => {
-    delete users[CurrentId];
+  ws.on('close', async () => {
+    await User.deleteOne({ id: CurrentId });
+    users = await getAllUsers();
 
     broadcastToOthers({
       type: USER_LIST_UPDATED,
