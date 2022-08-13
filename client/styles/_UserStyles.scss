@@ -3,11 +3,17 @@
   height: 100%;
   background-color: $main_color;
 
-  > h3 {
+  > div {
     background-color: darken($main_color, 10%);
-    color: lighten($main_color, 25%);
+  }
+
+  > div > h3 {    
+    color: white;
     padding: 0.5em 1em 0.5em;
     text-transform: uppercase;
+    width: calc(100% - 75px);
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 
@@ -64,6 +70,51 @@
   animation: pulsate 1000ms;
   animation-iteration-count: infinite;
   opacity: 1.0;
+}
+
+.dropbtn {
+  background-color: $lang_setting_color;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 0em;
+  right: 0em;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  width: 8em;
+  box-shadow: 0em 0.5em 2em 0em rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 0;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 0.6em 1em;
+  display: block;
+  cursor: pointer;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: darken($color: $lang_setting_color, $amount: 15%);
 }
 
 @keyframes pulsate {

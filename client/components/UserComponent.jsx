@@ -9,7 +9,9 @@ import { CHANGE_LANGUAGE } from '../const/ClientActionTypes';
 
 let UserComponent = ({ activeUser, users, changeLanguage }) => (
   <div className="user-list-wrapper">
-    <h3>{i18n.t("user.list")}</h3>
+    <div>
+      <h3>{i18n.t("user.list")}</h3>
+    </div>
     <ul className="user-list">
       {users.map(user => (
         <li
@@ -38,19 +40,22 @@ let UserComponent = ({ activeUser, users, changeLanguage }) => (
         </li>
       ))}
     </ul>
-    <div className="language-setting">
-      <button onClick={() => {
-        i18n.changeLanguage('en');
-        changeLanguage('en');
-      }}>EN</button>
-      <button onClick={() => {
-        i18n.changeLanguage('jp');
-        changeLanguage('jp');
-      }}>JP</button>
-      <button onClick={() => {
-        i18n.changeLanguage('vn');
-        changeLanguage('vn');
-      }}>VN</button>
+    <div className="dropdown">
+      <button class="dropbtn">Lang</button>
+      <div class="dropdown-content">
+        <a onClick={() => {
+          i18n.changeLanguage('en');
+          changeLanguage('en');
+        }}>EN</a>
+        <a onClick={() => {
+          i18n.changeLanguage('jp');
+          changeLanguage('jp');
+        }}>JP</a>
+        <a onClick={() => {
+          i18n.changeLanguage('vn');
+          changeLanguage('vn');
+        }}>VN</a>
+      </div>
     </div>
   </div>
 );
