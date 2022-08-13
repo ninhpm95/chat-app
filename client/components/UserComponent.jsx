@@ -31,7 +31,7 @@ let UserComponent = ({ activeUser, users, changeLanguage }) => (
           >
             {
               user.typing && user.id !== activeUser.id
-              ? 'typing...'
+              ? i18n.t("user.typing")
               : i18n.t("user.online")
             }
           </div>

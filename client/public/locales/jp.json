@@ -2,7 +2,8 @@
   "translation": {
     "user": {
       "list": "ユーザー一覧",
-      "online": "オンライン"
+      "online": "オンライン",
+      "typing": "入力中..."
     },
     "messageInput": {
       "send": "メッセージを入力してください"

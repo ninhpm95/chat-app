@@ -2,7 +2,8 @@
   "translation": {
     "user": {
       "list": "Danh sách người dùng",
-      "online": "trực tuyến"
+      "online": "trực tuyến",
+      "typing": "đang gõ..."
     },
     "messageInput": {
       "send": "Nhập tin nhắn"
