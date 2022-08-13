@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
 const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const User = require('./models/user');
 const Message = require('./models/message');
 
@@ -21,7 +22,7 @@ const {
 
 let mongodbUri = 'mongodb+srv://testuser:P%40ssword@cluster0.yqfofiw.mongodb.net/chat-app?retryWrites=true&w=majority';
 
-const server = new WebSocket.Server({ port: SOCKET_PORT });
+const wss = new WebSocket.Server({ port: SOCKET_PORT });
 
 let users = [];
 
@@ -67,6 +68,15 @@ let addUser = async (user) => {
   }
 }
 
+let generateHashedPw = async (pw) => {
+  try {
+    const hashedPw = await bcrypt.hash(pw, 10);
+    return hashedPw;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 let addMessage = async (message) => {
   try {
     const newMessage = await message.save();
@@ -78,14 +88,16 @@ let addMessage = async (message) => {
   }
 }
 
-server.on('connection', async (ws) => {
+wss.on('connection', async (ws) => {
   await connectToDB();
 
   const CurrentId = uuidv4();
+  let tempPassword = 'P@ssword';
+  let password = await generateHashedPw(tempPassword);
 
   const newUser = new User({
     id: CurrentId,
-    password: 'P@ssword',
+    password,
     email: `User-${CurrentId.substring(0, 5)}@ninh.com`,
     name: `User-${CurrentId.substring(0, 5)}`
   });
@@ -208,7 +220,7 @@ const broadcastToSelf = (action, ws) => {
 };
 
 const broadcastToOthers = (action, ws) => {
-  server.clients.forEach(client => {
+  wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN && client !== ws) {
       client.send(JSON.stringify(action));
     }
@@ -216,7 +228,7 @@ const broadcastToOthers = (action, ws) => {
 };
 
 const broadcastToAll = action => {
-  server.clients.forEach(client => {
+  wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(action));
     }
