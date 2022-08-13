@@ -5,6 +5,7 @@
 
   > div {
     background-color: darken($main_color, 10%);
+    height: 32px;
   }
 
   > div > h3 {    
@@ -74,6 +75,7 @@
 .dropbtn {
   background-color: $lang_setting_color;
   color: white;
+  height: 32px;
   border: none;
   cursor: pointer;
 }

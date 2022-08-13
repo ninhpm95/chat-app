@@ -1,5 +1,13 @@
 {
   "translation": {
+    "common": {
+      "en": "English",
+      "jp": "Japanese",
+      "vn": "Vietnamese"
+    },
+    "app": {
+      "language": "Language"
+    },
     "user": {
       "list": "User list",
       "online": "online",

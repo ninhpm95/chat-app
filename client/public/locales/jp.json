@@ -1,5 +1,13 @@
 {
   "translation": {
+    "common": {
+      "en": "英語",
+      "jp": "日本語",
+      "vn": "ベトナム語"
+    },
+    "app": {
+      "language": "言語"
+    },
     "user": {
       "list": "ユーザー一覧",
       "online": "オンライン",

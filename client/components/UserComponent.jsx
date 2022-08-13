@@ -41,20 +41,20 @@ let UserComponent = ({ activeUser, users, changeLanguage }) => (
       ))}
     </ul>
     <div className="dropdown">
-      <button class="dropbtn">Lang</button>
+      <button class="dropbtn">{i18n.t("app.language")}</button>
       <div class="dropdown-content">
         <a onClick={() => {
           i18n.changeLanguage('en');
           changeLanguage('en');
-        }}>EN</a>
+        }}>{i18n.t("common.en")}</a>
         <a onClick={() => {
           i18n.changeLanguage('jp');
           changeLanguage('jp');
-        }}>JP</a>
+        }}>{i18n.t("common.jp")}</a>
         <a onClick={() => {
           i18n.changeLanguage('vn');
           changeLanguage('vn');
-        }}>VN</a>
+        }}>{i18n.t("common.vn")}</a>
       </div>
     </div>
   </div>
