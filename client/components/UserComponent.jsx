@@ -28,11 +28,11 @@ let UserComponent = ({ activeUser, users, changeLanguage }) => (
           </div>
           <div
             className={classNames('user-typing', {
-              pulsate: user.typing && user.id !== activeUser.id
+              pulsate: user.typing
             })}
           >
             {
-              user.typing && user.id !== activeUser.id
+              user.typing
               ? i18n.t("user.typing")
               : i18n.t("user.online")
             }
