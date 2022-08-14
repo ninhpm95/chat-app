@@ -5,15 +5,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const PORT = 3000
 
 module.exports = {
-  context: path.resolve(__dirname, 'client'),
+  context: path.resolve(__dirname),
   mode: 'development',
   devtool: false,
-  entry: path.resolve(__dirname, './client/index.js'),
+  entry: path.resolve(__dirname, './index.js'),
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './client/static/index.html'),
-      favicon: path.resolve(__dirname, './client/static/favicon.ico'),
+      template: path.resolve(__dirname, './static/index.html'),
+      favicon: path.resolve(__dirname, './static/favicon.ico'),
       filename: 'index.html',
     }),
   ],
@@ -49,7 +49,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.css', '.scss']
   },
   output: {
-    filename: 'chat-app.js'
+    filename: 'chat-app-client.js'
   },
   devServer: {
     hot: true,
