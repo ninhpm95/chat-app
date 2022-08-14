@@ -1,6 +1,3 @@
-const APPLICATION_HOST = 'localhost';
-const SOCKET_PORT = 3002;
-
 import {
   START_APP,
   UPDATE_USER_LIST,
@@ -16,6 +13,9 @@ import {
 } from './const/SocketActionTypes';
 
 import store from './store';
+
+const APPLICATION_HOST = process.env.REACT_APP_APPLICATION_HOST;
+const SOCKET_PORT = process.env.REACT_APP_SOCKET_PORT;
 
 let socket = new WebSocket(`ws://${APPLICATION_HOST}:${SOCKET_PORT}`);
 

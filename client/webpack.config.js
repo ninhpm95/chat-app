@@ -1,8 +1,10 @@
-const path = require('path')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const PORT = 3000
+require('dotenv').config({ path: './.env' });
+
+const PORT = process.env.REACT_APP_PORT;
 
 module.exports = {
   context: path.resolve(__dirname),
@@ -15,6 +17,9 @@ module.exports = {
       template: path.resolve(__dirname, './static/index.html'),
       favicon: path.resolve(__dirname, './static/favicon.ico'),
       filename: 'index.html',
+    }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env)
     }),
   ],
   module: {

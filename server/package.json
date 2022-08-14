@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
     "mongoose": "^6.5.2",
     "uuid": "^8.3.2",
     "ws": "^8.6.0"
-  },
-  "devDependencies": {
-    
   },
   "scripts": {
     "start": "node index.js"

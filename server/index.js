@@ -6,8 +6,6 @@ const bcrypt = require('bcrypt');
 const User = require('./models/user');
 const Message = require('./models/message');
 
-const SOCKET_PORT = 3002;
-
 const {
   USER_CONNECTED,
   USER_TYPING,
@@ -21,7 +19,14 @@ const {
   CHANGE_USERNAME
 } = require('./const/SocketActionTypes');
 
-let mongodbUri = 'mongodb+srv://testuser:P%40ssword@cluster0.yqfofiw.mongodb.net/chat-app?retryWrites=true&w=majority';
+require('dotenv').config();
+
+const SOCKET_PORT = process.env.SOCKET_PORT;
+const DB = process.env.DB;
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+
+let mongodbUri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.yqfofiw.mongodb.net/${DB}?retryWrites=true&w=majority`;
 
 const wss = new WebSocket.Server({ port: SOCKET_PORT });
 
