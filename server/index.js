@@ -52,6 +52,8 @@ let getAllUsers = async () => {
 let getAllMessages = async () => {
   try {
     let messages = await Message.find({}, { id: 1, text: 1, time: 1, userId: 1, _id:0 });
+    console.log('Message list received!');
+    console.log(messages);
     return messages;
   } catch (err) {
     console.log(err);
@@ -104,9 +106,8 @@ wss.on('connection', async (ws) => {
   });
 
   await addUser(newUser);
-
-  users = await getAllUsers();
-  messages = await getAllMessages();
+  
+  [users, messages] = await Promise.all([getAllUsers(), getAllMessages()]);
 
   broadcastToSelf({
     type: USER_CONNECTED,
@@ -131,8 +132,6 @@ wss.on('connection', async (ws) => {
       case USER_TYPING: {
         await User.updateOne({ id: action.payload.userId }, { $set: { typing: action.payload.typing } });
         users = await getAllUsers();
-        // let userIndex = users.findIndex(user => user.userId === action.payload.userId);
-        // users[userIndex] = { ...users[userIndex], typing: action.payload.typing };
         broadcastToAll({
           type: USER_LIST_UPDATED,
           payload: {
@@ -140,8 +139,7 @@ wss.on('connection', async (ws) => {
           },
         });
 
-        console.log('User is typing');
-
+        console.log('User is typing:', action.payload.userId);
         break;
       }
 
@@ -173,8 +171,8 @@ wss.on('connection', async (ws) => {
           },
         }, ws);
 
-        console.log('Message received');
-
+        console.log('New message!');
+        console.log(newMessage);
         break;
       }
 
@@ -189,8 +187,9 @@ wss.on('connection', async (ws) => {
           },
         });
 
-        console.log('User name updated');
-
+        console.log('Username updated!');
+        console.log('User ID:', action.payload.userId);
+        console.log('New username:', action.payload.userName);
         break;
       }
 
@@ -210,7 +209,7 @@ wss.on('connection', async (ws) => {
       },
     }, ws);
 
-    console.log('1 user disconnected');
+    console.log('User disconnected:', CurrentId);
   })
 })
 
