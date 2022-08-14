@@ -6,13 +6,6 @@ const messageSchema = new Schema({
     type: String,
     required: true
   },
-  type: {
-    type: String,
-    default: 'normal'
-  },
-  count: {
-    type: Number
-  },
   text: {
     type: String,
     required: true

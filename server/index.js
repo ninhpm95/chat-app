@@ -2,6 +2,7 @@ const WebSocket = require('ws');
 const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
 const User = require('./models/user');
 const Message = require('./models/message');
 
@@ -30,7 +31,7 @@ let messages = [];
 
 let connectToDB = async () => {
   try {
-    await mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(mongodbUri);
     console.log("DB connected!");
   } catch (err) {
     console.log(err);
@@ -39,7 +40,7 @@ let connectToDB = async () => {
 
 let getAllUsers = async () => {
   try {
-    let users = await User.find({}, {id: 1, name: 1, typing: 1, _id:0});
+    let users = await User.find({}, { id: 1, name: 1, typing: 1, _id:0 });
     console.log('User list received!');
     console.log(users);
     return users;
@@ -50,7 +51,7 @@ let getAllUsers = async () => {
 
 let getAllMessages = async () => {
   try {
-    let messages = await Message.find({}, {id: 1, type: 1, count: 1, text: 1, time: 1, userId: 1, _id:0});
+    let messages = await Message.find({}, { id: 1, text: 1, time: 1, userId: 1, _id:0 });
     return messages;
   } catch (err) {
     console.log(err);
@@ -149,8 +150,6 @@ wss.on('connection', async (ws) => {
 
         let newMessage = new Message({
           id: NewMessageId,
-          type: action.payload.type,
-          count: action.payload.count,
           text: action.payload.text,
           time: action.payload.time,
           userId: action.payload.userId
