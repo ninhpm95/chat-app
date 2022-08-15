@@ -44,8 +44,7 @@ module.exports = {
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
         use: [
-          'file-loader',
-          'image-webpack-loader'
+          'file-loader'
         ]
       },
     ],
@@ -57,7 +56,6 @@ module.exports = {
     filename: 'chat-app-client.js'
   },
   devServer: {
-    hot: true,
     port: PORT
   }
 }
