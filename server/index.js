@@ -22,12 +22,10 @@ const {
 require('dotenv').config();
 
 const SOCKET_PORT = process.env.SOCKET_PORT;
-const DB = process.env.DB;
-const DB_USER = process.env.DB_USER;
-const DB_PASSWORD = process.env.DB_PASSWORD;
+const MONGODBURI = process.env.MONGODBURI;
 
 // URI to MongoDB Atlas
-let mongodbUri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.yqfofiw.mongodb.net/${DB}?retryWrites=true&w=majority`;
+let mongodbUri = MONGODBURI;
 
 const wss = new WebSocket.Server({ port: SOCKET_PORT });
 

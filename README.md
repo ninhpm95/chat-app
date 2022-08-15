@@ -10,11 +10,7 @@ A chat application implemented in React, Redux, WebSocket, MongoDB...
 ## Before running the app
 1. Change `/client/.env.example` to `/client/.env`
 2. Change `/server/.env.example` to `/server/.env`
-3. Find the following line in /server/index.js, which indicates the URI to MongoDB
-```js
-let mongodbUri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.yqfofiw.mongodb.net/${DB}?retryWrites=true&w=majority`;
-```
-4. Change the URI and `/server/.env` based on your mongoDB settings
+3. Change the URI inside `/server/.env` based on your mongoDB settings
 
 ## How to run
 ### Using Docker (make sure docker is installed)
