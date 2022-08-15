@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import "./i18n";
+import "./i18n"; // Internationalization
 import MainComponent from './components/MainComponent';
 
 const Application = ({ store }) => (

@@ -1,5 +1,6 @@
 import { SEND_MESSAGE, SET_STATUS_TO_TYPING } from '../const/ClientActionTypes';
 
+// Convert special characters to emoji: :), :D, :P, ;), :(
 let addEmoji = text => (
   text
     .replace(/\:\)/g, '\u{1F642}')
@@ -10,6 +11,7 @@ let addEmoji = text => (
 );
 
 export default store => next => action => {
+  // Intercept and change message: add userId, change special characters to emoji, add time
   if (action.type === SEND_MESSAGE) {
     return next({
       ...action,
@@ -22,6 +24,7 @@ export default store => next => action => {
     });
   }
 
+  // Intercept when sending user's typing status to server, add userId
   if (action.type === SET_STATUS_TO_TYPING) {
     return next({
       ...action,

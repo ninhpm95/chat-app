@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
+// User's profile picture
 import ProfilePicture from '../static/UserProfilePicture.png';
 
-import i18n from "../i18n";
+import i18n from "../i18n"; // Internationalization
 import { CHANGE_LANGUAGE } from '../const/ClientActionTypes';
 
 let UserComponent = ({ activeUser, users, changeLanguage }) => (
@@ -62,7 +63,7 @@ let UserComponent = ({ activeUser, users, changeLanguage }) => (
 
 export default connect(
   state => ({
-    language: state.application.language,
+    language: state.application.language, // language of the app
     activeUser: state.activeUser,
     users: state.users
   }), dispatch => ({

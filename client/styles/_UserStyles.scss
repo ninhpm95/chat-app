@@ -66,6 +66,7 @@
   padding-left: 0.65em;  
 }
 
+// pulsate animation when user is typing
 .pulsate {
   animation: pulsate 1000ms;
   animation-iteration-count: infinite;
@@ -118,6 +119,7 @@
   background-color: darken($color: $lang_setting_color, $amount: 15%);
 }
 
+// pulsate animation when user is typing
 @keyframes pulsate {
   0% { opacity: 0.3; }
   50% { opacity: 1.0; }

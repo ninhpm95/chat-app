@@ -26,14 +26,18 @@ const DB = process.env.DB;
 const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 
+// URI to MongoDB Atlas
 let mongodbUri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.yqfofiw.mongodb.net/${DB}?retryWrites=true&w=majority`;
 
 const wss = new WebSocket.Server({ port: SOCKET_PORT });
 
+// User list
 let users = [];
 
+// Message list
 let messages = [];
 
+// Connect to database
 let connectToDB = async () => {
   try {
     await mongoose.connect(mongodbUri);
@@ -43,6 +47,7 @@ let connectToDB = async () => {
   }
 }
 
+// Get all users from database
 let getAllUsers = async () => {
   try {
     let users = await User.find({}, { id: 1, name: 1, typing: 1, _id:0 });
@@ -54,6 +59,7 @@ let getAllUsers = async () => {
   }
 }
 
+// Get all messages from database
 let getAllMessages = async () => {
   try {
     let messages = await Message.find({}, { id: 1, text: 1, time: 1, userId: 1, _id:0 });
@@ -65,6 +71,7 @@ let getAllMessages = async () => {
   }
 }
 
+// Add new user to database
 let addUser = async (user) => {
   try {
     const newUser = await user.save();
@@ -76,6 +83,7 @@ let addUser = async (user) => {
   }
 }
 
+// Convert plain text password to hashed password
 let generateHashedPw = async (pw) => {
   try {
     const hashedPw = await bcrypt.hash(pw, 10);
@@ -85,6 +93,7 @@ let generateHashedPw = async (pw) => {
   }
 }
 
+// Add new message to database
 let addMessage = async (message) => {
   try {
     const newMessage = await message.save();
@@ -96,11 +105,14 @@ let addMessage = async (message) => {
   }
 }
 
+// When user first connects to socket server
 wss.on('connection', async (ws) => {
+  // Connect to database
   await connectToDB();
 
   const CurrentId = uuidv4();
   let tempPassword = 'P@ssword';
+  // Convert plain text password to hashed password
   let password = await generateHashedPw(tempPassword);
 
   const newUser = new User({
@@ -110,8 +122,10 @@ wss.on('connection', async (ws) => {
     name: `User-${CurrentId.substring(0, 5)}`
   });
 
+  // Add new user to database
   await addUser(newUser);
   
+  // Get all users and messages
   [users, messages] = await Promise.all([getAllUsers(), getAllMessages()]);
 
   broadcastToSelf({
@@ -130,13 +144,18 @@ wss.on('connection', async (ws) => {
     },
   }, ws);
 
+  // Handle message received
   ws.on('message', async (message) => {
     const action = JSON.parse(message);
 
     switch (action.type) {
+      // User's typing status is changed: from not typing to typing and vice versa
       case USER_TYPING: {
+        // Change user's typing status
         await User.updateOne({ id: action.payload.userId }, { $set: { typing: action.payload.typing } });
+        // Get all users after changing user's typing status
         users = await getAllUsers();
+        // Send that information to all users
         broadcastToAll({
           type: USER_LIST_UPDATED,
           payload: {
@@ -148,6 +167,7 @@ wss.on('connection', async (ws) => {
         break;
       }
 
+      // User sends new message
       case MESSAGE_SENT: {
         const NewMessageId = uuidv4();
 
@@ -158,7 +178,9 @@ wss.on('connection', async (ws) => {
           userId: action.payload.userId
         });
 
+        // Add message to database
         await addMessage(newMessage);
+        // Get all messages
         messages = await getAllMessages();
 
         broadcastToSelf({
@@ -181,8 +203,11 @@ wss.on('connection', async (ws) => {
         break;
       }
 
+      // User wants to change username
       case CHANGE_USERNAME: {
+        // Update user's username
         await User.updateOne({ id: action.payload.userId }, { $set: { name: action.payload.userName } });
+        // Get all users
         users = await getAllUsers();
 
         broadcastToAll({
@@ -203,8 +228,11 @@ wss.on('connection', async (ws) => {
     }
   })
 
+  // User closes connection
   ws.on('close', async () => {
+    // Delete user from database
     await User.deleteOne({ id: CurrentId });
+    // Get all users
     users = await getAllUsers();
 
     broadcastToOthers({
@@ -218,10 +246,12 @@ wss.on('connection', async (ws) => {
   })
 })
 
+// Send data to original user
 const broadcastToSelf = (action, ws) => {
   ws.send(JSON.stringify(action));
 };
 
+// Send data to other users
 const broadcastToOthers = (action, ws) => {
   wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN && client !== ws) {
@@ -230,6 +260,7 @@ const broadcastToOthers = (action, ws) => {
   })
 };
 
+// Send data to all users
 const broadcastToAll = action => {
   wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {

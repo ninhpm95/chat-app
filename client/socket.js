@@ -27,6 +27,7 @@ socket.onmessage = ({ data }) => {
   let action = JSON.parse(data);
 
   switch (action.type) {
+    // User first connects to server
     case USER_CONNECTED:
       store.dispatch({
           type: START_APP,
@@ -39,6 +40,7 @@ socket.onmessage = ({ data }) => {
       )
       break;
 
+    // User list is updated
     case USER_LIST_UPDATED:
       store.dispatch({
           type: UPDATE_USER_LIST,
@@ -49,6 +51,7 @@ socket.onmessage = ({ data }) => {
       )
       break;
 
+    // Receive new message => message list is updated
     case MESSAGE_RECEIVED:
       store.dispatch({
         type: UPDATE_MESSAGE_LIST,
@@ -58,6 +61,7 @@ socket.onmessage = ({ data }) => {
       })
       break;
 
+    // Message list is updated
     case MESSAGE_LIST_UPDATED:
       store.dispatch({
         type: UPDATE_MESSAGE_LIST,
