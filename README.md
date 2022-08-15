@@ -17,6 +17,18 @@ let mongodbUri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.yqfofiw.mongo
 4. Change the URI and `/server/.env` based on your mongoDB settings
 
 ## How to run
+### Using Docker (make sure docker is installed)
++ Build docker images
+  ```
+  docker-compose build
+  ```
++ Run
+  ```
+  docker-compose up
+  ```
++ Access the app via http://localhost:3000/
+
+### Using traditional way
 + Install dependencies
   + Open 2 terminals in "chat-app" directory
     + First terminal:
